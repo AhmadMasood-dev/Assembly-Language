@@ -1,4 +1,4 @@
-; get input untill space is entered
+; get input until space is entered
 dosseg
  .model small
  .stack 100h
