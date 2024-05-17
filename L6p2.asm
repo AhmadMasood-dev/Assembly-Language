@@ -1,3 +1,4 @@
+; get input untill space is entered
 dosseg
  .model small
  .stack 100h
@@ -5,17 +6,21 @@ dosseg
   .code
     main proc
     mov cx,1
+    
     check:
     
-    mov ah,1
+    mov ah,1  ;get input from user
     int 21h
+   
     mov dl,al
     cmp dl,' '
     je endProgram
+    
     inc cx
     LOOP check
 
     endProgram:
+   
     mov ah, 4ch
     int 21h
     main endp
