@@ -1,90 +1,89 @@
 .model small
 .stack 100h
 .data
+    message db 'GCD = $'
     var1 dw 60
     var2 dw 72
-    msg  db 'gcd is : $'
+    divid dw 1
+    GCD dw ?
+
 .code
 main proc
-              mov  ax, @data
-              mov  ds, ax
+    mov ax, @data       
+    mov ds, ax
 
- 
-              mov  ax, d1
-              mov  bx, d2
+    lea dx, message     
+    mov ah, 9           
+    int 21h             
 
-              call gcd
+    mov cx, var1     
+repeat:
+    mov dx, 0          
+    mov ax, var1     
+    div divid         
+    mov bx, dx      
+    mov dx, 0 
+    mov ax, var2    
+    div divid         
+    cmp dx, bx         
+    je Temp_Store       
+    jne Skip_Temp_Store 
+
+Temp_Store:             
+    mov bx, divid     
+    mov GCD, bx         
+    
+Skip_Temp_Store:       
+    inc divid        
+    loop repeat         
+
+    mov ax, GCD        
+    call DECOUT        
 
 
-              mov  dx, offset msg1
-              mov  ah, 9
-              int  21h
-
-              call print
-
-
-              mov  ah, 4ch
-              int  21h
+    mov ah, 4ch         
+    int 21h             
 main endp
+DECOUT PROC 
+    PUSH AX             ; Preserve AX
+    PUSH BX             ; Preserve BX
+    PUSH CX             ; Preserve CX
+    PUSH DX             ; Preserve DX
 
-gcd proc
+    CMP AX, 0           ; Check if AX value is non-negative
+    JG ALPHA            ; If AX is positive, jump to ALPHA    
 
-              cmp  bx, 0
-              je   exit_gcd
+    PUSH AX             ; Save value of AX
+    MOV DL, '-'         ; Set DL to '-' for negative sign
+    MOV AH, 2           ; Print character DOS function
+    INT 21H             ; Print '-' character
+    POP AX              ; Restore value of AX
+    NEG AX              ; Convert AX to its negative representation
 
+ALPHA:                  ; ALPHA label
+    XOR CX, CX          ; Clearing CX value
+    MOV BX, 10          ; Divisor in BX
 
-    next_iter:
-              xor  dx, dx
-              div  bx
-              mov  ax, bx
-              mov  bx, dx
-              cmp  bx, 0
-              jne  next_iter
+WHILE_:                 ; WHILE_ label
+    XOR DX, DX          ; Clearing DX value
+    DIV BX              ; Dividing AX by BX
+    PUSH DX             ; Save remainder value into stack
+    INC CX              ; Increment CX to count the values inserted
+    CMP AX, 0           ; Check if AX is zero
+    JNE WHILE_          ; If AX is not zero, repeat the loop
+    MOV AH, 2           ; Set up for printing DL part of DX
 
-    exit_gcd: 
-              ret
-gcd endp
+PRINT:                  ; PRINT label
+    POP DX              ; Load 8-bit value into DL from popped DX
+    ADD DL, 48          ; Convert to ASCII decimal value
+    INT 21H             ; Display the DL value
+    LOOP PRINT          ; Decrement CX value and jump until CX is zero
 
-print proc
- 
-              mov  cx, 0
-              mov  bx, 10
+    POP DX              ; Restoring values
+    POP CX
+    POP BX
+    POP AX
 
-    label1:   
-
-              cmp  ax, 0
-              je   print1
-
-
-              div  bx
-              push dx
-
- 
-              inc  cx
-
-              jmp  label1
-
-    print1:   
-
-              cmp  cx, 0
-              je   exit
-
-              pop  dx
-
-              add  dx, 48
-
-
-              mov  ah, 02h
-              int  21h
-
-
-              dec  cx
-              jmp  print1
-
-    exit:     
-              ret
-print endp
-
-end main
-
-
+    RET                 ; Return from procedure
+DECOUT ENDP             ; End of DECOUT procedure
+end main                ; End of main program
