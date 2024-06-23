@@ -2,28 +2,35 @@
 dosseg
  .model small
  .stack 100h
- .data
-  .code
-    main proc
+.data
+  var1 db 'Enter a letter $'
+.code
+main proc
+             mov ax,@data
+             mov ds,ax
     
-    mov ah,1
-    int 21h
+             lea dx,var1     ;message
+             mov ah,9
+             int 21h
+             
+             mov ah,1
+             int 21h
    
-    mov dl,al
+             mov dl,al
    
-    cmp dl,64  
+             cmp dl,64
     
-    jp endprogram ;check parity flag and jump if not capital
+             jp  endprogram  ;check parity flag and jump if not capital
    
 
-    cmp dl,91 
+             cmp dl,91
 
-    mov ah,2
-    int 21h
+             mov ah,2
+             int 21h
 
    
-     endprogram:
-     mov ah, 4ch
-     int 21h
-    main endp
+  endprogram:
+             mov ah, 4ch
+             int 21h
+main endp
   end main
