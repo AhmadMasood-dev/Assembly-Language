@@ -1,4 +1,4 @@
-;program to get 2 numbers find sum and sub of
+;program to get 2 numbers find sum and sub 
 dosseg
 .model small
 .stack 100h
@@ -7,10 +7,8 @@ dosseg
        var2 db 'Enter A Number Again: $'
        var3 db 'Sum = $'
        var4 db 'Sub = $'
-
        num1 db ?
        num2 db ?
-
 .code
 main proc
             mov ax,@data
@@ -68,10 +66,6 @@ main proc
             add dl,48
             mov ah,2
             int 21h
-
-
-
-
 
             mov ah,4ch
             int 21h
