@@ -1,3 +1,4 @@
+;program to get 2 numbers find sum and sub of
 dosseg
 .model small
 .stack 100h
@@ -16,24 +17,24 @@ main proc
             mov ds,ax
 
 
-            lea dx, var1
+            lea dx, var1       ;msg1
             mov ah,9
             int 21h
 
             mov ah,1
             int 21h
-            sub al,48
+            sub al,48          ;convert to ascii
             mov num1,al
 
-            mov dl,10
+            mov dl,10          ;space
             mov ah,2
             int 21h
 
-            lea dx, var2
+            lea dx, var2       ;msg2
             mov ah,9
             int 21h
 
-            mov ah,1
+            mov ah,1           ;second num
             int 21h
             sub al,48
             mov num2,al
@@ -42,14 +43,14 @@ main proc
             mov ah,2
             int 21h
 
-            lea dx, var3
+            lea dx, var3       ;sum=
             mov ah,9
             int 21h
 
             mov dl,num1
             mov bl,num2
             add dl,bl
-            add dl,48
+            add dl,48          ;convert ascii to char
             mov ah,2
             int 21h
 
