@@ -2,7 +2,7 @@
 .model small
 .stack 100h
 .data
-    var  dw 41    ; BCD number
+    var  dw 41h    ; BCD number
     num1 db ?
     num2 db ?
 
