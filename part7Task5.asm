@@ -28,7 +28,7 @@ main proc
                div  divid
                cmp  dx, bx         ;if both are equal then save it
                je   saveNumber
-               jne  skiptNumber
+               jne  skipNumber
 
     saveNumber:
                mov  bx, divid
